@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>初识vue</title>
+    <!--引入vue-->
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!--
+        1，让vue工作，就必须创建vue实例，且传入配置；
+        2，root容器里的代码符合html规范，只不过混入特殊的vue语法；
+        3，root容器里的代码被称为【vue模板】，vue先拿容器解析，后进行一对一替换，变成html代码。
+        4，vur实例和容器一一对应；
+        5，真实开发只有一个vue实例称作Root根，会配合组件一起使用；
+        6，{{xxx}}的xxx要写js表达式，且xxx自动读取data中的所有属性；
+        7，一旦data的数据改变，页面中用到的该数据的地方也会自动更新。
+
+        注意区分：js表达式、js代码（语句）
+        A，js表达式：表达式均可返回一个值，可以放在任何需要值的地方
+            （1）a
+            （2）a+b
+            （3）function(1)
+            （4）x===y ? 'yes' : 'no'
+        B，js代码（语句）//起控制作用
+            （1）if(){} //控制走不走
+            （2）for(){} //控制走几次
+    -->
+
+    <!--准备容器并赋予ID，使用vue的插值法-->
+    <div id="demo">
+        <h1>Hello，{{name.toUpperCase()}}</h1>
+        <h1>我的年龄是{{age}}</h1>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false//阻止 vue 在启动时生成生产提示
+        
+        //创建vue实例
+        new Vue({
+            el:'#demo', //id对#，类class对应点.；el指定实例给哪个容器，值通常是css选择器字符串
+            data:{      //data存数据，供el所指容器使用，值暂时先写成对象（以后还能写成函数）
+                name:'sxakln',
+                age:18
+            }
+        })
+    </script>
+</body>
+</html>
+ 
