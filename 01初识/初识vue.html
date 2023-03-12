@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,6 +10,7 @@
     <!--引入vue-->
     <script src="../js/vue.js"></script>
 </head>
+
 <body>
     <!--
         1，让vue工作，就必须创建vue实例，且传入配置；
@@ -37,17 +39,17 @@
     </div>
 
     <script>
-        Vue.config.productionTip = false//阻止 vue 在启动时生成生产提示
-        
+        Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示
+
         //创建vue实例
         new Vue({
-            el:'#demo', //id对#，类class对应点.；el指定实例给哪个容器，值通常是css选择器字符串
-            data:{      //data存数据，供el所指容器使用，值暂时先写成对象（以后还能写成函数）
-                name:'sxakln',
-                age:18
+            el: '#demo', //id对#，类class对应点.；el指定实例给哪个容器，值通常是css选择器字符串
+            data: { //data存数据，供el所指容器使用，值暂时先写成对象（以后还能写成函数）
+                name: 'sxakln',
+                age: 18
             }
         })
     </script>
 </body>
+
 </html>
- 
