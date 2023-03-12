@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>模板语法</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        vue模板语法2大类：
+        1插值语法：用于解析标签体中内容
+        例：{{xxx}}，xxx是js表达式，且可以读取data中所有属性
+        2指令语法：用于解析标签（标签属性、标签体内容、绑定事件...）
+        例：v-bind:href="xxx"或者简写为:href="xxx"，xxx同为js表达式，且可以读取data中所有属性
+        vue中有很多指令，都以v-开头
+    -->
+    <div id="root">
+        <h1>插值语法</h1>
+        <h3>你好，{{name}}，请访问{{url}}</h3>
+        <!--把url放在school对象后，url在data第一层级就未定义了-->
+        <hr>
+        <h1>指令语法</h1>
+        <a v-bind:href="school.url.toUpperCase()" x="hello">点我去{{school.name}}学1</a>
+        <a :href="school.url" x="hi">点我去{{school.name}}学2</a>
+        <a :href="Date.now()">时间戳</a>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: 'jack', //光标出现的第一个位置
+                school: {
+                    name: '硅谷',
+                    url: 'https://www.bilibili.com/video/BV1Zy4y1K7SH'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
