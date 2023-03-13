@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>el和data</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        data和el的2种写法
+        1、el两种都可
+        （1）初始化即指定
+        （2）通过vm.$mount('#root')指定el
+        2、data以后必须使用函数式（用组件时）
+        （1）对象式
+        （2）函数式
+        3、原则：
+        由Vue管理的函数不要写箭头函数（不识别），一旦写箭头函数，this就不是Vue实例了，而是window
+    -->
+    <div id="root">
+        <h1>你好，{{name}}</h1>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            //el: '#root', //第一种初始化即指定
+
+            //data第一种：对象式
+            /* data: {
+                name: '硅谷', //光标出现的第一个位置
+            } */
+
+            //data第二种：函数式
+            data() /* :function() */ {
+                console.log('此处this就是Vue实例对象', this);
+                return {
+                    name: '硅谷'
+                }
+            }
+        });
+
+        console.log(vm); //带$符的都是给程序员用的，注意包括vm实例的原型对象Vue里的$方法都可以使用
+        vm.$mount('#root'); //第二种需要时再指定
+    </script>
+</body>
+
+</html>
