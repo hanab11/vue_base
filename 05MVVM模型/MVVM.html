@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MVVM</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        MVVM模型
+        一、M（模型Model）：data中的数据
+        二、V（视图View）：模板代码（容器）
+        三、VM（视图模型ViewModel）：Vue实例
+        发现
+        1、data中所有属性，出现在vm身上（el和data初始化给Vue，vm又是Vue实例）
+        2、vm身上属性 和 Vue原型所有属性，在Vue模板代码中都可使用
+    -->
+    <div id="root">
+        <h1>学校：{{name}}</h1>
+        <h1>测试1：{{$children}}</h1>
+        <h1>测试2：{{$el}}</h1>
+        <h1>测试3：{{$mount}}</h1>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷' //光标出现的第一个位置
+            }
+        });
+
+        console.log(vm);
+    </script>
+</body>
+
+</html>
