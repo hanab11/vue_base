@@ -23,6 +23,7 @@
         }
 
         //借助Object.defineProperty进行关联（和增删改查等操作）
+        //对象定义属性，传入参数：对象, 属性, 和能操作属性的函数 例getter setter
         Object.defineProperty(
             Person, 'age', {
                 /* value: 18,

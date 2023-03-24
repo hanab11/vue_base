@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>数据代理概念</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+      数据代理：通过一个对象代理，对另一个对象中的属性进行操作（读/写）
+    -->
+    <div id="root"></div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        let Obj1 = {
+            x: 100
+        };
+        let Obj2 = {
+            y: 200
+        };
+
+        Object.defineProperty(Obj2, 'x', {
+            //对象定义属性，传入参数：对象、属性、和能操作属性的函数例getter setter
+            get() {
+                console.log('通过Obj2代理，获取Obj1属性');
+                return Obj1.x;
+            },
+            set(value) {
+                console.log('通过Obj2代理，修改Obj1属性');
+                Obj1.x = value;
+            }
+        });
+    </script>
+</body>
+
+</html>
