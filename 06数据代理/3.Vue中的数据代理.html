@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vue中的数据代理</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        1.Vue中的数据代理：通过vm对象代理，data对象（副本在vm._data）中的属性name、address
+        2.Vue数据代理为了方便程序员操作data中的数据
+        3.基本原理：
+            通过Object.defineProperty()把data对象所有属性复制到vm上。
+            为每个添加到vm上的属性，都指定一个getter/setter。
+            在getter/setter内部去操作data中对应的属性。
+        4.提示一下，在vm._data中，Vue使用了Observer监视器用来动态更新页面上的内容（比如name改了那么页面上name也会改）
+        
+        控制台指令测试
+        vm.name='aaa'
+        vm._data.name ='大家都一样'
+    -->
+    <div id="root">
+        <h2>名称：{{name}}</h2>
+        <h2>地址：{{address}}</h2>
+        <h2>名称：{{_data.name}}</h2>
+        <h2>地址：{{_data.address}}</h2>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+                address: '科技园'
+            }
+        });
+    </script>
+</body>
+
+</html>
