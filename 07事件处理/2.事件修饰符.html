@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>2.事件修饰符</title>
+    <script src="../js/vue.js"></script>
+
+    <!-- css风格 *对所有容器操作 -->
+    <style>
+        * {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        
+        .css1 {
+            height: 50px;
+            background-color: burlywood;
+        }
+        
+        .box1 {
+            padding: 10px;
+            background-color: aqua;
+        }
+        
+        .box2 {
+            padding: 20px;
+            background-color: yellowgreen;
+        }
+        
+        .list {
+            width: 200px;
+            height: 200px;
+            background-color: yellow;
+            overflow: auto;
+        }
+        
+        li {
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        Vue中的事件修饰符
+        1.prevent：阻止默认事件（常）
+        2.stop：阻止事件冒泡（常）注：两层div中，代码逻辑：捕获阶段是由外向内，冒泡阶段由内向外，且程序先执行内部再冒泡到外部
+        3.once：只可执行一次（常）
+        4.capture：事件捕获模式，即由外向内执行
+        5.self：只有event.target（事件目标）是当前操作元素时才触发事件
+        6.passive：立刻执行默认事件行为，无需等待事件回调（循环耗时等）
+    -->
+    <div id="root">
+        <h2>欢迎来{{name}}学习</h2>
+
+        <!-- 1.prevent：阻止默认事件（常） -->
+        <a href="https://www.baidu.com" @click.prevent="showInfo">点我提示信息（阻止默认事件）</a>
+
+        <!-- 2.stop：阻止事件冒泡（常）注意：stop修饰符放在外部是没有作用的，因为冒泡阶段是由内向外 -->
+        <div class="css1" @click="showInfo">
+            <button @click.stop="showInfo">点我提示信息（阻止事件冒泡）</button>
+        </div>
+
+        <!-- 3.once：只可执行一次（常） -->
+        <button @click.once="showInfo">点我提示信息（只可执行一次）</button>
+
+        <!-- 4.capture：事件捕获模式 注意：同2.理，capture修饰符要放在外部，会优先由外向内执行，并且不存在冒泡阶段，即stop修饰符失效 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            div1，点我提示信息
+            <div class="box2" @click="showMsg(2)">
+                div2，点我提示信息（捕获模式）
+            </div>
+        </div>
+
+        <!-- 5.self：只有event.target（事件目标）是当前操作元素时才触发事件，效果类似2.阻止冒泡 -->
+        <div class="css1" @click.self="showInfo">
+            <button @click="showInfo">点我提示信息（当前元素才触发，也有阻止冒泡的效果）</button>
+        </div>
+
+        <!-- 6.passive：立刻执行默认事件行为eg跳转、滚动条滚动，无需等待事件回调（循环耗时等） -->
+        <!-- scroll滚动条和wheel滚轮两个事件，wheel会常用passive，scroll有时不需要 -->
+        <ul @wheel.passive="showLog" class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷' //光标出现的第一个位置
+            },
+            methods: {
+                showInfo(event) {
+                    console.log(event.target);
+                    alert('你好！')
+                },
+                showMsg(msg) {
+                    console.log('执行div' + msg);
+                },
+                showLog() {
+                    for (let i = 0; i < 49999; i++) {
+                        console.log('roll');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
