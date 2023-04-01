@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.键盘事件</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        1.Vue中常用别名
+            回车——enter
+            删除——delete（会捕获到删除和退格键，两种都识别）
+            退出——esc
+            空格——space
+            换行——tab（特殊，必须配合keydown使用）
+            上——up
+            下——down
+            左——left
+            右——right
+        2.除以上外，Vue未提供别名的按键，可以用键盘码原始的value去绑定，但是注意要短横线命名（eg：.caps-lock、print-screen两单词的）
+        3.系统修饰键：ctrl、alt、shift、meta，配合keyup使用时 需要按下修饰键的同时，按其他键，随后松开，才算触发事件。keydown则正常
+        4.也可直接使用keyCode具体的value（eg：.13，将废弃不推荐使用）
+        5.Vue.config.keyCodes.自定义名 = 键盘码，定制别名
+    -->
+    <div id="root">
+        <h2>欢迎来到{{name}}</h2>
+
+        <!-- keyup松开按键（一般触发一次），keydown按下按键（可以一直按住触发） 两个事件 -->
+        <input type="text" placeholder="按下回车提示输入" @keyup.shift="showInfo">
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        Vue.config.keyCodes.win = 91; //给91号键盘码的按键定义一个别名（官方名meta）
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+            },
+            methods: {
+                showInfo(event) {
+                    /* if (event.keyCode !== 13) return; //这里就是.enter事件修饰的工作逻辑 */
+
+                    console.log(event.key, event.keyCode); //和keyup、keydown、键盘码keyCode相关
+                    console.log(event.target.value); //和.enter、.shift等修饰符相关
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+</html>
