@@ -63,6 +63,9 @@
         <!-- 2.stop：阻止事件冒泡（常）注意：stop修饰符放在外部是没有作用的，因为冒泡阶段是由内向外 -->
         <div class="css1" @click="showInfo">
             <button @click.stop="showInfo">点我提示信息（阻止事件冒泡）</button>
+
+            <!-- 修饰符可以连续写 -->
+            <a href="https://www.baidu.com" @click.prevent.stop="showInfo">点我提示信息（阻止默认事件）</a>
         </div>
 
         <!-- 3.once：只可执行一次（常） -->
