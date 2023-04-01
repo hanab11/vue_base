@@ -26,12 +26,13 @@
         3.系统修饰键：ctrl、alt、shift、meta，配合keyup使用时 需要按下修饰键的同时，按其他键，随后松开，才算触发事件。keydown则正常
         4.也可直接使用keyCode具体的value（eg：.13，将废弃不推荐使用）
         5.Vue.config.keyCodes.自定义名 = 键盘码，定制别名
+        6.关联按键ctrl、alt、shift要设计成快捷键形式shift+xxx，直接在.shift后加.xxx即可
     -->
     <div id="root">
         <h2>欢迎来到{{name}}</h2>
 
         <!-- keyup松开按键（一般触发一次），keydown按下按键（可以一直按住触发） 两个事件 -->
-        <input type="text" placeholder="按下回车提示输入" @keyup.shift="showInfo">
+        <input type="text" placeholder="按下回车提示输入" @keyup.shift.c="showInfo">
     </div>
     <script>
         Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
