@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>1.用插值语法实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 涉及动态显示都用v-model（双向绑定数据） -->
+        <p>姓：<input type="text" v-model="firstName"></p>
+        <p>名：<input type="text" v-model="lastName"></p>
+        <p>全名：{{firstName.slice(0,3)}}-{{lastName}}</p>
+        <!-- 随着业务逻辑不断丰富，建议容器中只写简单的表达式 -->
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: '张', //光标出现的第一个位置
+                lastName: '三'
+            }
+        });
+    </script>
+</body>
+
+</html>

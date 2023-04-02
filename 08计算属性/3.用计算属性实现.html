@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.用计算属性实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        1.定义：要用的属性不存在，而是通过已有的属性计算/拼接得来
+        2.原理：底层借助Object.definProperty方法提供的getter、setter
+        3.getter什么时候执行？
+            （1）初次读取执行一次
+            （2）所依赖（使用）的数据发生变化，会再次调用
+        4.优势：和methods相比，计算属性拥有缓存机制（复用），效率高、调试方便
+        5.备注：
+            （1）计算属性最终出现在vm上，直接使用即可
+            （2）如果计算属性被修改，必须写setter，且使得所依赖的数据发生变化
+    -->
+    <div id="root">
+        <p>姓：<input type="text" v-model="firstName"></p>
+        <p>名：<input type="text" v-model="lastName"></p>
+        <p>全名：{{fullName}}</p>
+        <p>全名：{{fullName}}</p>
+        <p>全名：{{fullName}}</p>
+        <!-- 计算属性拥有缓存，重复时只会调用一次 -->
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: '张', //光标出现的第一个位置
+                lastName: '三'
+            },
+            computed: { //计算属性也视为属性，即使它拥有getter、setter；
+                fullName: {
+                    //get作用？有人使用（读取）时自动调用get()，拿到的返回值赋值给vm.fullName
+                    //get什么时候会调用？1.初次读取fullName 2.所依赖（使用）的数据发生变化
+                    get() {
+                        console.log('getter被调用', this);
+                        return this.firstName + '-' + this.lastName
+                    },
+                    //set什么时候调用？fullName被修改时
+                    set(value) {
+                        console.log('setter被调用', this);
+                        const arr = value.split('-')
+                        this.firstName = arr[0]
+                        this.lastName = arr[1]
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

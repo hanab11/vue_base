@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.用计算属性实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        计算属性的简写，只有考虑读取，不考虑修改的时候才能使用！
+    -->
+    <div id="root">
+        <p>姓：<input type="text" v-model="firstName"></p>
+        <p>名：<input type="text" v-model="lastName"></p>
+        <p>全名：{{fullName}}</p>
+        <p>全名：{{fullName}}</p>
+        <p>全名：{{fullName}}</p>
+        <!-- 计算属性拥有缓存，重复时只会调用一次 -->
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: '张', //光标出现的第一个位置
+                lastName: '三'
+            },
+            computed: {
+                //简写方式：计算属性就当做getter使用（getter的别名）
+                fullName() {
+                    console.log('getter被调用', this);
+                    return this.firstName + '-' + this.lastName
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

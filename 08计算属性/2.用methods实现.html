@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>1.用methods实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 涉及动态显示都用v-model（双向绑定数据） -->
+        <p>姓：<input type="text" v-model="firstName"></p>
+        <p>名：<input type="text" v-model="lastName"></p>
+        <p>全名：{{fullName()}}</p>
+        <p>全名：{{fullName()}}</p>
+        <p>全名：{{fullName()}}</p>
+        <!-- 方法每次都会被调用，即使他们一模一样 -->
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: '张', //光标出现的第一个位置
+                lastName: '三'
+            },
+            methods: {
+                fullName() {
+                    console.log('fullName被执行了', this);
+                    return this.firstName + '-' + this.lastName;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
