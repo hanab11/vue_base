@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>2.监视属性</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        监视属性watch
+        1当监视的属性变化时，回调函数自动调用，进行操作
+        2监视的属性必须存在，计算来的属性也可以监视
+        3监视的2种写法
+        （1）new Vue的时候直接传入watch配置（已经想好监视谁）
+        （2）通过vm.$watch('xxx', {yyy})监视
+    -->
+    <div id="root">
+        <h2>天气很{{state}}，计数{{x}}</h2>
+        <button @click="changeWheater">切换天气</button>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                isHot: true, //光标出现的第一个位置
+                x: 0
+            },
+            computed: {
+                //注意计算属性这里是简写
+                state() {
+                    return this.isHot == true ? '炎热' : '凉爽'; // 可简写，布尔类型 isHot? 默认判断true or false
+                }
+            },
+            methods: {
+                changeWheater() {
+                    this.isHot = !this.isHot;
+                    this.x++;
+                }
+            },
+            watch: {
+                //监视谁就写为对象
+                state: {
+                    //初始化立刻执行一次handler
+                    immediate: true,
+                    //handler当监视属性发生改变时便调用
+                    handler(newValue, oldValue) {
+                        console.log('state被修改了，由' + oldValue + '变成' + newValue);
+                    }
+                },
+                isHot: { //可以不传参
+                    handler() {
+                        console.log('isHot被修改了');
+                    }
+                }
+            }
+        });
+
+        /* vm.$watch( //监视对象需要用引号''
+            'state', {
+                immediate: true,
+                handler(newValue, oldValue) {
+                    console.log('state被修改了，由' + oldValue + '变成' + newValue);
+                }
+            }
+        ) */
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>4.监视简写</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+
+    -->
+    <div id="root">
+        <h2>天气很{{state}}，计数{{x}}</h2>
+        <button @click="changeWheater">切换天气</button>
+
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                isHot: true, //光标出现的第一个位置
+                x: 0
+            },
+            computed: {
+                //注意计算属性这里是简写
+                state() {
+                    return this.isHot == true ? '炎热' : '凉爽'; // 可简写，布尔类型 isHot? 默认判断true or false
+                }
+            },
+            methods: {
+                changeWheater() {
+                    this.isHot = !this.isHot;
+                    this.x++;
+                }
+            },
+            watch: {
+                //正常写法
+                /* state: {
+                    immediate: true,
+                    handler(newValue, oldValue) {
+                        console.log('state被修改了，由' + oldValue + '变成' + newValue);
+                    }
+                }, */
+
+                //简写默认只有handler里的内容，没有配置项（和计算属性简写其实同理，都写成函数）
+                state(oldValue, newValue) {
+                    console.log('state被修改了，由' + oldValue + '变成' + newValue);
+                }
+            }
+        });
+
+        //正常写法
+        vm.$watch('isHot', {
+            immediate: true,
+            handler(newValue, oldValue) {
+                console.log('isHot被修改了，由' + oldValue + '变成' + newValue);
+            }
+        });
+        //简写（$watch里直接写 监视属性和函数）
+        vm.$watch('x', function(newValue, oldValue) {
+            console.log('x被修改了，由' + oldValue + '变成' + newValue);
+        });
+    </script>
+</body>
+
+</html>
