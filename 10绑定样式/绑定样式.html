@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>绑定样式</title>
+    <script src="../js/vue.js"></script>
+
+    <style>
+        .basic {
+            width: 400px;
+            height: 200px;
+            border: 1px solid black;
+        }
+        
+        .happy {
+            border: 4px solid red;
+            background-color: rgba(255, 255, 0, 0.666);
+            background: linear-gradient(30deg, yellow, pink, orange, yellow);
+        }
+        
+        .sad {
+            border: 4px dashed green;
+            background-color: gray;
+        }
+        
+        .normal {
+            border: 4px solid burlywood;
+            background-color: skyblue;
+        }
+        
+        .option1 {
+            background: linear-gradient(30deg, skyblue, burlywood, pink, skyblue);
+        }
+        
+        .option2 {
+            font-size: 40px;
+        }
+        
+        .option3 {
+            border-radius: 30px;
+        }
+        
+        .option4 {
+            background-color: yellowgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        绑定样式
+        1.class样式，写法:class='xxx' xxx可以是字符串，数组，对象
+            字符串适用于：类名不确定，动态指定
+            数组：绑定多个样式，个数不确定，名字不确定
+            对象：绑定多个样式，个数确定，名字确定，但不确定用不用
+        2.style样式
+            :style="{fontSize: xxx}" 其中xxx是动态值
+            :style="[a,b]" 其中a，b是样式对象
+    -->
+    <div id="root">
+        <!-- 基础样式就写basic，需要动态的样式就使用v-bind:class，Vue最终会把空格+动态样式跟在基础class后 -->
+        <!-- 绑定class样式——字符串写法，适用于样式类名不确，需要动态指定 -->
+        <div class="basic" v-bind:class="mood" @click="changeMood">{{name}}</div><br>
+
+        <!-- 绑定class样式——（字符串）数组写法，适用于样式个数不确，名字不确 -->
+        <div class="basic" :class="classArr">{{name}}</div><br>
+
+        <!-- 绑定class样式——（布尔值）对象写法，适用于样式个数确，名字确，但动态决定用不用 -->
+        <div class="basic" :class="classObj">{{name}}</div><br>
+
+
+        <!-- 绑定style样式——对象写法，了解 -->
+        <div class="basic" :style="styleObj">{{name}}</div><br>
+
+        <!-- 绑定style样式——对象数组写法，了解 -->
+        <div class="basic" :style="styleObjArr">{{name}}</div><br>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+                mood: 'normal',
+                classArr: ['option1', 'option2', 'option3', 'option4'],
+                classObj: {
+                    option1: false,
+                    option2: false,
+                    option3: true,
+                    option4: true
+                },
+                styleObj: {
+                    fontSize: '50px'
+                },
+                styleObjArr: [{
+                    fontSize: '100px',
+                    border: 'dashed'
+                }, {
+                    color: 'red',
+                    backgroundColor: 'skyblue'
+                }, ]
+            },
+            methods: {
+                changeMood() {
+                    const arr = ['happy', 'sad', 'normal'];
+                    //console.log(Math.random()); //random输出一个小于1的随机小数，*3<3
+                    const index = Math.floor(Math.random() * 3); //floor向下取整，即0 1 2随机
+                    this.mood = arr[index];
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
