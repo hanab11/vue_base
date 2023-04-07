@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>5.计算属性简写_用watch实现</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        computed和watch的区别：
+        1.computed能完成的，watch也能
+        2.watch能完成的，computed不一定能，例：watch可以进行异步任务（比如延迟1秒执行，包含需要return返回值的操作不适合异步执行）
+        重要的原则：
+        1.被Vue管理的函数，都写成普通函数，这样this的指向才是vm 或 组件实例对象
+        2.不被Vue管理的函数（定时器回调函数、ajax回调函数、promise回调函数），都写成箭头函数，这样this的指向才是vm 或 组件实例对象
+    -->
+    <div id="root">
+        <p>姓：<input type="text" v-model="firstName"></p>
+        <p>名：<input type="text" v-model="lastName"></p>
+        <p>全名：{{fullName}}</p>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                firstName: '张', //光标出现的第一个位置
+                lastName: '三',
+                fullName: '张-三' //监视属性和计算属性不同，只监视已有元素，所以初始化一个fullName
+            },
+            computed: {
+                /* fullName() {
+                    console.log('getter被调用', this);
+                    return this.firstName + '-' + this.lastName
+                } */
+            },
+            watch: {
+                //监视的是两个输入框（姓firstName、名lastName）
+                firstName(xin) {
+                    //定时器函数必须写成箭头函数，《箭头函数没有自己的this，就会向外寻找，向上一级找到firstName()，是由Vue控制》
+                    setTimeout(() => {
+                        //带有return返回值的操作不适合异步执行，所以上面的 计算属性 不能延迟1秒执行
+                        this.fullName = xin + '-' + this.lastName;
+                    }, 1000);
+                },
+                lastName(min) {
+                    this.fullName = this.firstName + '-' + min;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
