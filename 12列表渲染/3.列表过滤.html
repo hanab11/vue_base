@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.列表过滤</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+
+    -->
+    <div id="root">
+        <h2>人员列表</h2>
+        <!-- input框作为过滤器，需要多次读取、修改关键词，故使用v-model双向绑定，绑定了监视属性/计算属性 -->
+        <input type="text" placeholder="请输入关键词（模糊搜索）" v-model="keyWord">
+        <ul>
+            <li v-for="(p,index) in filtPersons" :key="index">
+                {{p.name}}_{{p.age}}_{{p.sex}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                keyWord: '',
+                persons: [{
+                    id: '001',
+                    name: '马冬梅',
+                    age: 18,
+                    sex: '女'
+                }, {
+                    id: '002',
+                    name: '周冬雨',
+                    age: 19,
+                    sex: '女'
+                }, {
+                    id: '003',
+                    name: '周杰伦',
+                    age: 20,
+                    sex: '男'
+                }, {
+                    id: '004',
+                    name: '林俊杰',
+                    age: 21,
+                    sex: '男'
+                }],
+                //filtPersons: []
+            },
+            /* watch: {
+                keyWord: {
+                    immediate: true, //特别的，用indexOf找空字符串默认返回0索引，所以可以优先执行一次filter(true)，拿到了persons里的所有数据
+                    handler(val) {
+                        //控制台 vm.persons[0].name.indexOf('马')>-1，结果为true，即filter需要的返回值是true或者false，来判定是否过滤！
+                        this.filtPersons = this.persons.filter((p) => {
+                            return p.name.indexOf(val) > -1 //indexOf返回数组中指定元素的索引（是否包含），返回值只分-1 和 >-1的整数，正数表示找到且索引为x（x>=0），-1表没找到。
+                        })
+                    }
+                }
+            } */
+
+            //计算属性会默认初始化一次
+            computed: {
+                filtPersons() {
+                    return this.persons.filter((p) => {
+                        return p.name.indexOf(this.keyWord) > -1
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
