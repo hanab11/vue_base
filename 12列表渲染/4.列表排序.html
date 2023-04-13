@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>4.列表排序</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        在列表过滤的基础上，排序
+    -->
+    <div id="root">
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入关键词（模糊搜索）" v-model="keyWord">
+        <button @click="sortType = 1">年龄升序↑</button>
+        <button @click="sortType = 2">年龄降序↓</button>
+        <button @click="sortType = 0">原顺序</button>
+        <ul>
+            <li v-for="(p,index) in filtAndSortPersons" :key="index">
+                {{p.name}}_{{p.age}}_{{p.sex}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                //设定排序类型，0原顺序，1升序，2降序
+                sortType: 0,
+                keyWord: '',
+                persons: [{
+                    id: '001',
+                    name: '马冬梅',
+                    age: 20,
+                    sex: '女'
+                }, {
+                    id: '002',
+                    name: '周冬雨',
+                    age: 18,
+                    sex: '女'
+                }, {
+                    id: '003',
+                    name: '周杰伦',
+                    age: 21,
+                    sex: '男'
+                }, {
+                    id: '004',
+                    name: '林俊杰',
+                    age: 19,
+                    sex: '男'
+                }],
+            },
+            //计算属性会默认初始化一次
+            computed: {
+                filtAndSortPersons() {
+                    //不直接返回，而是先通过一个列表排序判断
+                    const arr = this.persons.filter((p) => {
+                        return p.name.indexOf(this.keyWord) > -1;
+                    });
+                    //判断!= 0（即为真），可以直接简写省略!= 0
+                    if (this.sortType != 0) {
+                        //sort函数的两个参数，p1为前，p2为后；p1-p2为升序，p2-p1为降序
+                        arr.sort((p1, p2) => {
+                            return this.sortType === 1 ? p1.age - p2.age : p2.age - p1.age;
+                        })
+                    };
+                    return arr;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
