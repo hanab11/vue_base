@@ -21,8 +21,9 @@
         <button @click="sortType = 2">年龄降序↓</button>
         <button @click="sortType = 0">原顺序</button>
         <ul>
-            <li v-for="(p,index) in filtAndSortPersons" :key="index">
+            <li v-for="(p,index) in filtAndSortPersons" :key="p.id">
                 {{p.name}}_{{p.age}}_{{p.sex}}
+                <input type="text">
             </li>
         </ul>
     </div>
