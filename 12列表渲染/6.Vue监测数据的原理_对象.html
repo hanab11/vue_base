@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>6.Vue监测数据的原理_对象</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 控制台看vm._data -->
+    <div id="root">
+        <h2>学校名称：{{name}}</h2>
+        <h2>学校地址：{{address}}</h2>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+                address: '北京',
+                student: {
+                    name: 'tom',
+                    age: {
+                        zAge: 30,
+                        jAge: 18
+                    }
+                },
+                friends: [{
+                    name: 'fy',
+                    age: 27
+                }, {
+                    name: 'chalic',
+                    age: 25
+                }, {
+                    name: 'maybe',
+                    age: 26
+                }]
+            },
+        });
+    </script>
+</body>
+
+</html>
