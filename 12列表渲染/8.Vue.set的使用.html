@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>8.vue.set的使用</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        控制台看vm._data
+        Vue.set / vm.$set
+        修改非数组时，第二三参数是键值对，即key: value
+        修改数组时，第二个参数为index下标
+     -->
+    <div id="root">
+        <h1>学校信息</h1>
+        <h2>名称：{{name}}</h2>
+        <h2>地址：{{address}}</h2>
+        <h1>学生信息</h1>
+        <button @click="addSex">点我添加性别属性，默认女</button>
+        <h2>姓名：{{student.name}}</h2>
+        <h2 v-if="student.sex">性别：{{student.sex}}</h2>
+        <h2>年龄：真年龄{{student.age.zAge}}，对外年龄{{student.age.jAge}}</h2>
+        <h2>朋友们：</h2>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}---{{f.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+                address: '北京',
+                student: {
+                    name: 'xixi',
+                    age: {
+                        zAge: 30,
+                        jAge: 18
+                    },
+                    friends: [{
+                        name: 'fy',
+                        age: 27
+                    }, {
+                        name: 'chalic',
+                        age: 25
+                    }, {
+                        name: 'maybe',
+                        age: 26
+                    }]
+                },
+            },
+            methods: {
+                addSex() {
+                    //set的两种写法，备注：set的对象不能是 实例对象vm及其下根成员，即data！
+                    //Vue.set(this.student, 'sex', '女');
+
+                    //methods只要配置正确，this的指向就是Vue的实例对象vm
+                    this.$set(this.student, 'sex', '女');
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

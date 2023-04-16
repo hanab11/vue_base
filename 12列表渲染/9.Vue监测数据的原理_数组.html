@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>9.Vue监测数据的原理_数组</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        控制台看vm._data
+     -->
+    <div id="root">
+        <h1>学校信息</h1>
+        <h2>名称：{{name}}</h2>
+        <h2>地址：{{address}}</h2>
+        <h1>学生信息</h1>
+        <button @click="addSex">点我添加性别属性，默认女</button>
+        <h2>姓名：{{student.name}}</h2>
+        <h2 v-if="student.sex">性别：{{student.sex}}</h2>
+        <h2>年龄：真年龄{{student.age.zAge}}，对外年龄{{student.age.jAge}}</h2>
+        <h2>朋友们：</h2>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}---{{f.age}}
+            </li>
+        </ul>
+        <h2>爱好：</h2>
+        <ul>
+            <li v-for="(h,index) in student.hobby" :key="index">
+                {{h}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+                address: '北京',
+                student: {
+                    name: 'xixi',
+                    age: {
+                        zAge: 30,
+                        jAge: 18
+                    },
+                    friends: [{
+                        name: 'fy',
+                        age: 27
+                    }, {
+                        name: 'chalic',
+                        age: 25
+                    }, {
+                        name: 'maybe',
+                        age: 26
+                    }],
+                    hobby: [
+                        '下棋',
+                        '麻将',
+                        '宝可梦',
+                    ]
+                },
+            },
+            methods: {
+                addSex() {
+                    //set的两种写法，备注：set的对象不能是 实例对象vm及其下根成员，即data！
+                    //Vue.set(this.student, 'sex', '女');
+
+                    //methods只要配置正确，this的指向就是Vue的实例对象vm
+                    this.$set(this.student, 'sex', '女');
+
+                    //Vue.set、(vm) this.$set方法也可以修改数组中的数据，并进行网页上数据更新，修改数组时第二个参数为index下标
+                    Vue.set(this.student.hobby, 2, '打篮球');
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

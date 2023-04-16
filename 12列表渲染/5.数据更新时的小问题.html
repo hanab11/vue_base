@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>5.数据更新时的小问题</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        在列表过滤的基础上，排序
+    -->
+    <div id="root">
+        <h2>人员列表</h2>
+        <button @click="updateMei">点按钮更新马冬梅信息</button>
+        <ul>
+            <li v-for="(p,index) in persons" :key="p.id">
+                {{p.name}}_{{p.age}}_{{p.sex}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                //sortType: 0,
+                //keyWord: '',
+                persons: [{
+                    id: '001',
+                    name: '马冬梅',
+                    age: 20,
+                    sex: '女'
+                }, {
+                    id: '002',
+                    name: '周冬雨',
+                    age: 18,
+                    sex: '女'
+                }, {
+                    id: '003',
+                    name: '周杰伦',
+                    age: 21,
+                    sex: '男'
+                }, {
+                    id: '004',
+                    name: '林俊杰',
+                    age: 19,
+                    sex: '男'
+                }],
+            },
+            methods: {
+                updateMei() {
+                    /* this.persons[0].name = '马老师'; //正确代码
+                    this.persons[0].age = '50';
+                    this.persons[0].sex = '男'; */
+
+                    //Vue检测不到的修改代码，以下代码是为了显示出，网页上数据更新时的问题
+                    /* this.persons[0] = { //错误代码
+                        id: '001',
+                        name: '马老师',
+                        age: 50,
+                        sex: '男'
+                    } */
+
+                    //使用7个数组专属的方法时，Vue会附带进行网页上数据的更新，如：Array.splice(index, howmay, 新元素)删除/添加的拼接方法
+                    /* this.persons.splice(0, 1, { //正确代码
+                        id: '001',
+                        name: '马老师',
+                        age: 50,
+                        sex: '男'
+                    }) */
+
+                    //Vue.set、(vm) this.$set方法也可以修改数组中的数据，并进行网页上数据更新
+                    Vue.set(this.persons, 0, { //正确代码
+                        id: '001',
+                        name: '马老师',
+                        age: 50,
+                        sex: '男'
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
