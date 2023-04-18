@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>10.总结Vue数据监测</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        Vue监视数据的原理：
+        1.Vue会监视data中所有层次的数据（通过递归实现）
+        
+        2.如何监测对象中的数据：
+            通过setter实现，且要在new Vue时就传入监测数据
+            （1）对象中后追加的属性，Vue默认不做响应式处理
+            （2）如需给后追加的属性做响应式，请使用
+                Vue.set(target, 对象用propertyName/数组用index, value) 或
+                vm.$set(同上) API
+
+        3.如何监测数组中的数据：
+            通过包装数组更新元素的方法实现，本质是
+            首先，调用原生的数组方法进行更新
+            其次，重新解析模板（容器），进而更新（响应到）页面上
+
+        4.在Vue修改数组中的某个元素一定要使用如下方法：
+            （1）7个数组API：push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+            （2）Vue.set()
+    
+        特别注意：Vue.set() 和 Vm.$set() 不能给vm 或 vm的根数据对象data 添加属性！
+
+        5.使用非变更方法时（例filter不改变原数组），可用新数组替换旧数组
+
+        6.Vue使用 数据劫持 的表现就在于，_data和data之间，多出了getter、setter等（等包括监视器、原型）
+            白话理解：如果有人读取/修改了data中的对象属性，那么马上就被getter、setter劫持到了
+            
+     -->
+    <div id="root">
+        <h1>学生信息</h1>
+
+        <button @click="student.age++">年龄加1岁</button><br>
+        <button @click="addSex">添加性别属性，默认男</button><br>
+        <button @click="student.sex = '女'">修改性别</button><br>
+        <button @click="addFriendAt1st">在列表首位添加一个朋友</button><br>
+        <button @click="updateFriendNameAt1st">修改第一个朋友的名字为：张三</button><br>
+        <button @click="addHobby">添加一个爱好</button><br>
+        <button @click="updateHobby">修改一个爱好为：我喜欢</button><br>
+        <button @click="filterSmoke">过滤掉爱好中的：抽烟喝酒</button><br>
+
+        <h2>姓名：{{student.name}}</h2>
+        <h2 v-if="student.sex">性别：{{student.sex}}</h2>
+        <h2>年龄：{{student.age}}</h2>
+        <h2>爱好：</h2>
+        <ul>
+            <li v-for="(h,index) in student.hobby" :key="index">
+                {{h}}
+            </li>
+        </ul>
+        <h2>朋友们：</h2>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}---{{f.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                student: {
+                    name: 'xixi',
+                    age: 18,
+                    friends: [{
+                        name: 'fy',
+                        age: 27
+                    }, {
+                        name: 'chalice',
+                        age: 25
+                    }, {
+                        name: 'maybe',
+                        age: 26
+                    }],
+                    hobby: [
+                        '抽烟喝酒',
+                        '唱',
+                        '跳',
+                        'rap',
+                        '打篮球',
+                    ]
+                },
+            },
+            methods: {
+                addSex() {
+                    //需要写成响应式，Vue.set和vm.$set均可，对象形式（键，值）
+                    Vue.set(this.student, 'sex', '男');
+                    this.$set(this.student, 'sex', '男');
+                },
+                addFriendAt1st() {
+                    //需要写成响应式，用7个数组相关操作即可
+                    this.student.friends.unshift({
+                        name: '罗翔',
+                        age: 40
+                    })
+
+                    //Vue.set也可以用于对数组修改，数组形式（索引index，值）
+                    Vue.set(this.student.friends, 3, {
+                        name: 'xNova',
+                        age: 25
+                    })
+                },
+                updateFriendNameAt1st() {
+                    //注意：数组索引[0]被赋值是不能响应式的，
+                    //但是[0].name可以，因为Vue对数组中对象的属性也设置getter、setter，即响应式
+                    this.student.friends[0].name = '张三';
+                    //this.student.friends[0] = {name: '张三', age: 27}
+                },
+                addHobby() {
+                    //需要写成响应式，用7个数组相关操作即可
+                    this.student.hobby.push('只因');
+
+                    //Vue.set(this.student.hobby, 5, '只因你');
+                },
+                updateHobby() {
+                    //需要写成响应式，用7个数组相关操作即可 
+                    //splice(Del-index, Del-number, Add-item) 前两项为删除对象的xxx，有第三~N个选项就是添加
+                    this.student.hobby.splice(0, 1, '我喜欢');
+
+                    Vue.set(this.student.hobby, 5, '我喜欢你');
+                },
+                filterSmoke() {
+                    //filter返回值是过滤出的新数组，赋值给原数组即可渲染（使用非变更方法时，可用新数组替换旧数组）
+                    this.student.hobby = this.student.hobby.filter((h) => {
+                        return h != '抽烟喝酒';
+                    })
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
