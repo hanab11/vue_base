@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>7.模拟Vue数据加工、监测（简单）</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        Vue监测数据改变的原理：
+            其实就是把data加工成_data，靠setter重新解析模板（重新渲染、响应式更新页面）  
+        
+        Vue首先拿到data里的数据
+            vm.xxx <= vm._data.xxx <= 加工data，从右开始第一个是加工，第二个是数据代理
+    -->
+    <div id="root"></div>
+    <script>
+        //默认data对象形式
+        let data = {
+            name: '张三',
+            age: 18,
+            student: {
+                fName: 'a',
+                lName: 'b'
+            }
+        }
+
+        //创建一个监视的实例对象，用于监视data属性变化，即变化就调用setter
+        const obs = new Obeserver(data);
+        console.log(obs);
+        /*
+            Observer{}
+            name:{...}
+            age:{...}
+            student:{...} 备注：Vue的底层写了递归，所以student里的属性也有getter、setter
+            get
+            set
+            ......
+            __proto__
+        */
+
+        //准备一个vm实例对象
+        let vm = new Vue({})
+        data = vm._data = obs
+
+        //keys创建一个数组迭代对象， 该对象包含了数组的键：
+        function Obeserver(obj) {
+            //汇总对象的所有属性 keysArr 是数组
+            const keysArr = Object.keys(obj);
+            //遍历
+            keysArr.forEach((k) => {
+                Object.defineProperty(this, k, {
+                    get() {
+                        return obj[k]
+                    },
+                    set(val) {
+                        console.log(`${k}被改了，我要去解析模板，生成虚拟DOM`);
+                        obj[k] = val
+                    }
+                })
+            })
+        }
+
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+    </script>
+</body>
+
+</html>
