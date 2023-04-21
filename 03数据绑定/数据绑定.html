@@ -21,11 +21,12 @@
     -->
     <div id="root">
         <!-- 一般写法 -->
-        单向数据绑定：<input type="text" v-bind:value="name"><br> 双向数据绑定：
-        <input type="text" v-model:value="name"><br>
+        <span>单向数据绑定：<input type="text" v-bind:value="name"><br></span>
+        <span>双向数据绑定：<input type="text" v-model:value="name"><br></span>
+
         <!-- 简写 -->
-        单向数据绑定：<input type="text" :value="name"><br> 双向数据绑定：
-        <input type="text" v-model="name"><br>
+        <span>单向数据绑定：<input type="text" :value="name"><br></span>
+        <span>双向数据绑定：<input type="text" v-model="name"><br></span>
 
         <!-- 如下代码是错误的，因为v-model只能应用在表单类（输入类）元素上 -->
         <h2 v-model:x="name">你好啊</h2>
