@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.v-cloak</title>
+    <script src="../js/vue.js"></script>
+
+    <style>
+        [v-cloak] {
+            /* 对所有包含v-cloak的代码上样式 */
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        学过：
+        v-bind  ：单向绑定解析表达式，简写为 :xxx
+        v-model ：双向绑定
+        v-on    ：绑定事件监听，简写为 @xxx
+        v-for   ：遍历数组/对象/字符串
+        v-if    ：条件渲染（动态控制节点是否存在）
+        v-if-else：条件渲染（动态控制节点是否存在）
+        v-else  ：条件渲染（动态控制节点是否存在）
+        v-show  ：条件渲染（动态控制节点是否展示，代码一直存在）
+
+        v-cloak指令（不需要参数）：
+            1.本质是个特殊属性，Vue实例创建完毕并且接管（渲染）容器后，会自动删除v-cloak属性
+            2.使用CSS配合v-cloak可以解决 网速慢时页面展示出{{xxx}}的问题！
+    
+    -->
+    <div id="root">
+        <h2 v-cloak>你好，{{name}}</h2>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷', //光标出现的第一个位置
+            },
+        });
+    </script>
+</body>
+
+</html>
