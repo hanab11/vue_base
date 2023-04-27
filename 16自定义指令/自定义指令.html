@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>自定义指令</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        需求1：定义v-big指令，和v-text类似，但会把绑定的数值放大10倍
+        需求2：定义v-fbind指令，和v-bind类似，但可让其绑定的input元素获取焦点
+
+        自定义指令总结：
+            一，语法
+                （1）局部指令
+                    new Vue({
+                        directives:{指令名:配置对象}
+                    })或
+                    new Vue({
+                        directives:{指令名:function() 缩写 指令名()} //函数
+                    })
+                （2）全局指令
+                    Vue.directive(指令名,配置对象) 或
+                    Vue.directive(指令名,function()) //函数
+            二，配置对象中常有的三个回调函数：
+                （1）bind()，指令与DOM元素(标签)成功绑定时调用（初次）
+                （2）inserted()，指令所在的DOM元素(标签)被插入页面时调用（一般执行一次）
+                （3）update()，指令所在模板div重新解析时调用（一般会多次执行）
+            三，备注
+                1.指令定义时不加v-，但使用时要加v-
+                2.指令是多个单词要加 - ，并且要用引号包住
+                
+    -->
+    <div id="root">
+        <h2>{{name}}</h2>
+        <h2>当前的n值是：<span v-text="n"></span></h2>
+        <h2>放大10倍后n值是：<span v-big="n"></span></h2>
+        <button @click="n++">点我n++</button>
+        <hr>
+        <input type="text" v-bind:value="n">普通bind<br>
+        <input type="text" v-fbind:value="n">自定义bind
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        //定义全局指令，可以给多个div用
+        Vue.directive('funs', function(element, binding) {});
+        Vue.directive('objs', {
+            bind() {},
+            inserted() {},
+            update() {}
+        });
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '硅谷',
+                n: 1,
+            },
+            //指令，有函数式和对象式，一般简单需求用函数式
+            directives: {
+                //big函数何时会被调用？1.指令与元素(标签)成功绑定时（初次）2.指令所在模板div重新解析时
+                //(标签体（DOM元素），绑定对象（指令和DOM元素进行绑定）)
+                /* 'big-number'(element, binding) //指令是多个单词要加 - ，并且要用引号包住 */
+                big(element, binding) {
+                    console.log(element, element instanceof HTMLElement, this); //验证是否是实例对象，且注意指令的this指向
+                    element.innerText = binding.value * 10; //big功能
+                },
+                //
+                /* fbind(element, b) {
+                    element.focus() //函数式并没有掌握所有调用时机（只有bind()、update()），要更细节就需要使用对象式
+                } */
+                fbind: {
+                    //指令与DOM元素(标签)成功绑定时（初次）
+                    bind(element, binding) {
+                        console.log('1st.bind()');
+                        element.value = binding.value;
+                    },
+                    //指令所在的DOM元素(标签)被插入页面时（一般执行一次）
+                    inserted(element, binding) {
+                        console.log('2nd.inserted()');
+                        element.focus();
+                    },
+                    //指令所在模板div重新解析时（一般会多次执行）
+                    update(element, binding) {
+                        console.log('3rd.update()');
+                        element.value = binding.value;
+                        element.focus();
+                    }
+                },
+                funs(element, binding) {}, //函数式
+                objs: {
+                    bind() {},
+                    inserted() {},
+                    update() {}
+                } //对象式
+            }
+        });
+    </script>
+</body>
+
+</html>
