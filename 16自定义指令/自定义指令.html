@@ -49,7 +49,7 @@
         Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
 
         //定义全局指令，可以给多个div用
-        Vue.directive('funs', function(element, binding) {});
+        Vue.directive('funcs', function(element, binding) {});
         Vue.directive('objs', {
             bind() {},
             inserted() {},
@@ -93,12 +93,12 @@
                         element.focus();
                     }
                 },
-                funs(element, binding) {}, //函数式
-                objs: {
+                funcs(element, binding) {}, //函数式
+                objs: { //对象式
                     bind() {},
                     inserted() {},
                     update() {}
-                } //对象式
+                }
             }
         });
     </script>
