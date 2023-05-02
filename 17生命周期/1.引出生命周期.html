@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>1.引出生命周期</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        生命周期：
+            1.又名：生命周期（回调）函数、生命周期钩子（钩出来执行一次）
+            2.是什么：Vue关键时刻自动调用的一些特殊名称的函数（既定的）
+            3.生命周期函数名字不可更改，但具体内容可根据需求写
+            4.生命周期函数中的this指向 vm 或 组件实例对象
+    -->
+    <div id="root">
+        <!-- 动态绑定样式:style，且内容要写成对象、键值对，
+            前opacity是css属性不透明度，后的是变量名，且重名时可以简写成一个{opacity} -->
+        <h2 :style="{opacity:opacity}">学习Vue生命周期</h2>
+        <h2 v-if="a">从这里看出mounted的特性</h2>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                a: false,
+                opacity: 1, //光标出现的第一个位置
+            },
+            methods: {
+                changeOpa() {
+                    //使用定时器setInterval，动态地改变
+                    setInterval(() => {
+                        this.opacity -= 0.02;
+                        if (this.opacity <= 0) this.opacity = 1;
+                    }, 20);
+                },
+            },
+            //abcd（代称）和mounted 一起作为Vue的生命周期
+            a() {},
+            b() {},
+            //Vue完成模板的解析并把 初始的真实DOM元素 放入页面后（mounted挂载完成），就调用mounted
+            mounted() {
+                console.log("调用mounted()");
+                this.changeOpa();
+                //this.a = true; //手动调整vm.a的值，页面出现变化，但mounted只调用一次
+            },
+            c() {},
+            d() {},
+        });
+    </script>
+</body>
+
+</html>
