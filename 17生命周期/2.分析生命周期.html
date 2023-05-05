@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>2.分析生命周期</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>当前的n值是：{{n}}</h2>
+        <button @click="add">点我n++</button>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            //需要换行就得使用模板字符串包裹起来
+            /* template: `
+            <div>
+                <h2>当前的n值是：{{n}}</h2>
+                <button @click="add">点我n++</button>
+            </div>
+            `, */
+            data: {
+                n: 1, //光标出现的第一个位置
+            },
+            methods: {
+                add() {
+                    this.n++;
+                }
+            },
+            //和mounted()一样，所有生命周期函数都能直接写在Vue里，等待Vue调用
+            beforeCreate() {
+                console.log("1.调用beforeCreate()，未进行数据代理，所以n值是" + this.n);
+                //console.log(this);
+                //debugger; //debug想分析到哪就在哪停住
+            },
+            created() {
+                console.log("2.调用Created()，已完成数据代理，所以n值是" + this.n);
+            },
+            beforeMount() {
+                console.log("3.调用beforeMount()，此时页面只有未经Vue编译的DOM结构（标签、内容）");
+                //debugger;
+            },
+            mounted() {
+                console.log("4.调用mounted()，");
+                //console.log(this);
+                //debugger;
+            },
+            beforeUpdate() { //面试题：在哪个生命周期钩子中页面和数据尚未保持同步！
+                console.log("5.调用beforeUpdate()，此时页面上的数据没来得及更新，但n值已经是" + this.n);
+                //debugger;
+            },
+            updated() {
+                console.log("6.调用updated()，数据与页面保持同步，n值是" + this.n);
+                //debugger;
+            },
+
+
+
+            beforeDestroy() {
+                console.log("7.调用beforeDestroy()，");
+
+            },
+            destroyed() {
+                console.log("8.调用destroyed()，");
+
+            },
+        });
+    </script>
+</body>
+
+</html>
