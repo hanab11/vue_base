@@ -14,6 +14,7 @@
     <div id="root">
         <h2>当前的n值是：{{n}}</h2>
         <button @click="add">点我n++</button>
+        <button @click="byeVm">点我销毁vm</button>
     </div>
     <script>
         Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
@@ -33,6 +34,9 @@
             methods: {
                 add() {
                     this.n++;
+                },
+                byeVm() {
+                    this.$destroy();
                 }
             },
             //和mounted()一样，所有生命周期函数都能直接写在Vue里，等待Vue调用
@@ -48,8 +52,9 @@
                 console.log("3.调用beforeMount()，此时页面只有未经Vue编译的DOM结构（标签、内容）");
                 //debugger;
             },
+            //Vue完成模板的解析并把 初始的真实DOM元素 放入页面后（mounted挂载完成），就调用mounted
             mounted() {
-                console.log("4.调用mounted()，");
+                console.log("4.调用mounted()，把初始的真实DOM放入页面（只调用一次！）");
                 //console.log(this);
                 //debugger;
             },
@@ -61,16 +66,13 @@
                 console.log("6.调用updated()，数据与页面保持同步，n值是" + this.n);
                 //debugger;
             },
-
-
-
+            //只要到了以下阶段，所有对数据的修改，Vue不会再帮你更新页面了
             beforeDestroy() {
-                console.log("7.调用beforeDestroy()，");
-
+                console.log("7.调用beforeDestroy()，此时是销毁之前，vm还在，n值是" + this.n);
+                this.n = 999;
             },
             destroyed() {
                 console.log("8.调用destroyed()，");
-
             },
         });
     </script>

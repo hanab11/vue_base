@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>3.总结生命周期</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        常用的生命周期钩子（函数）：
+            1.mounted：发送ajax请求、启动定时器、绑定自定义事件、订阅消息等【初始化操作】
+            2.beforDestroy：清除定时器、解绑自定义事件、取消订阅消息等【收尾工作】
+        
+        关于销毁Vue实例：
+            1.销毁后借助Vue开发者工具无法看到任何信息
+            2.销毁后 自定义事件失效，但原生DOM事件依然有效
+            3.beforDestroy之后不会触发更新流程
+    -->
+    <div id="root">
+        <!-- 动态绑定样式:style，且内容要写成对象、键值对，
+            前opacity是css属性不透明度，后的是变量名，且重名时可以简写成一个{opacity} -->
+        <h2 :style="{opacity:opacity}">学习Vue生命周期</h2>
+        <button @click="opacity = 1">设置透明度为1</button>
+        <button @click="stop">点我停止变换</button>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                opacity: 1, //光标出现的第一个位置
+            },
+            methods: {
+                changeOpa() {
+                    //使用定时器setInterval，动态地改变
+                    this.timer = setInterval(() => {
+                        console.log("设置定时器");
+                        this.opacity -= 0.02;
+                        if (this.opacity <= 0) this.opacity = 1;
+                    }, 20);
+                },
+                stop() {
+                    this.$destroy();
+                }
+            },
+            //Vue完成模板的解析并把 初始的真实DOM元素 放入页面后（mounted挂载完成），就调用mounted
+            mounted() {
+                console.log("调用mounted()");
+                this.changeOpa();
+            },
+            beforeDestroy() {
+                console.log("vm即将销毁，清除定时器");
+                clearInterval(this.timer);
+            },
+        });
+    </script>
+</body>
+
+</html>
