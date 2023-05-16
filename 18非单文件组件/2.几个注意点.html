@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>2.几个注意点</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        几个注意的点：
+            1.组件名：
+                一个单词组成：
+                （1）首字母大写
+                （2）首字母小写
+                多个单词组成：
+                （1）（短横线连接）：my-school
+                （2）每个单词首字母大写：MySchool（需要脚手架支持）
+                备注：
+                （1）组件名尽可能回避html已有标签
+                （2）使用name配置项指定组件在开发者工具中呈现的名字
+            
+            2.组件标签：
+                （1）<xxx></xxx>
+                （2）<xxx/> 备注：不使用脚手架时，<xxx/>会导致后续组件不能渲染
+            
+            3.简写
+                const school = Vue.extend(options) 简写成：const school = options;
+    -->
+    <div id="root">
+        <xuexiao></xuexiao>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        //创建组件 =Vue.extend({}) 简写如下
+        const school = {
+            name: '开发者工具中设置组件名',
+            template: `
+                <div>
+                    <h2>学校名称：{{name}}</h2>
+                    <h2>学校地址：{{address}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    name: '硅谷',
+                    address: '北京'
+                }
+            }
+        };
+
+        const vm = new Vue({
+            el: '#root',
+            data: {},
+            components: {
+                xuexiao: school
+            }
+        });
+    </script>
+</body>
+
+</html>
