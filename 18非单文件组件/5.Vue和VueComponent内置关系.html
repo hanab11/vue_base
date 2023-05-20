@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>5.Vue和VueComponent内置关系</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        1.重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+        2.为什么要有关系：让组件实例对象（vc）可以访问到Vue原型上的属性、方法。
+        （既然都叫做VueComponent肯定要能拿到Vue原型上的属性、方法，否则直接Component就好）
+    -->
+    <div id="root">
+        <school></school>
+    </div>
+    <script>
+        Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
+
+        //定义一个构造函数
+        function Demo() {
+            this.x = 1;
+            this.y = 2;
+        }
+
+        //创建Demo实例对象d
+        const d = new Demo();
+
+        console.log('显式原型属性', Demo.prototype); //显式原型属性在函数上
+
+        console.log('隐式原型属性', d.__proto__); //隐式原型属性在实例对象上
+
+        console.log('以上是否相同', Demo.prototype === d.__proto__); //它们都指向函数的原型对象
+
+        //程序员通过显式原型属性操作原型对象，追加z属性，value是99
+        Demo.prototype.z = 99;
+
+        console.log(d, d.z, d.__proto__.z); //实例对象可以获取到原型属性上的值
+
+        function Person() {}; //构造函数名可用于区分实例对象
+        function Cat() {};
+        console.log(new Person(), new Cat());
+
+
+        //内置关系的验证
+        Vue.prototype.v = 100;
+
+
+        //定义组件
+        const school = Vue.extend({
+            template: `
+                <div>
+                    <h2>学校名称：{{name}}</h2>
+                    <h2>学校地址：{{address}}</h2>
+                    <button @click="showV">点我验证内置关系</button>
+                </div>
+            `,
+            data() {
+                return {
+                    name: '硅谷',
+                    address: '北京'
+                }
+            },
+            methods: {
+                showV() {
+                    console.log('组件里的this指向组件的实例对象', this);
+                    console.log(Vue.prototype); //Vue原型
+                    console.log(this.v); //组件可以访问到Vue原型上的v
+                }
+            },
+        });
+
+        //创建vm
+        const vm = new Vue({
+            el: '#root',
+            data: {},
+            components: {
+                school,
+            }
+        });
+
+        console.log('验证内置关系', school.prototype.__proto__ === Vue.prototype);
+    </script>
+</body>
+
+</html>
