@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- 让ie浏览器以最高渲染级别渲染 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 开启移动端的理想视口 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 配置页签图标 BASE_URL会指向public文件夹 -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <!-- 配置标题 会在package包里找配置好的标题 -->
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+</head>
+
+<body>
+    <!-- 当浏览器不支持js时，noscript标签里的元素会被渲染 -->
+    <noscript>
+    </noscript>
+
+    <!-- 容器 -->
+    <div id="root"></div>
+</body>
+
+</html>
