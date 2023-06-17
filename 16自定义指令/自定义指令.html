@@ -48,12 +48,12 @@
     <script>
         Vue.config.productionTip = false; //阻止 vue 在启动时生成生产提示
 
-        //定义全局指令，可以给多个div用
-        Vue.directive('funcs', function(element, binding) {});
+        //定义全局指令，可以给多个div用，分函数式、对象式
+        Vue.directive('funcs', function (element, binding) { });
         Vue.directive('objs', {
-            bind() {},
-            inserted() {},
-            update() {}
+            bind() { },
+            inserted() { },
+            update() { }
         });
 
         const vm = new Vue({
@@ -64,6 +64,13 @@
             },
             //指令，有函数式和对象式，一般简单需求用函数式
             directives: {
+                funcs(element, binding) { }, //函数式
+                objs: { //对象式
+                    bind() { },
+                    inserted() { },
+                    update() { }
+                },
+
                 //big函数何时会被调用？1.指令与元素(标签)成功绑定时（初次）2.指令所在模板div重新解析时
                 //(标签体（DOM元素），绑定对象（指令和DOM元素进行绑定）)
                 /* 'big-number'(element, binding) //指令是多个单词要加 - ，并且要用引号包住 */
@@ -93,12 +100,6 @@
                         element.focus();
                     }
                 },
-                funcs(element, binding) {}, //函数式
-                objs: { //对象式
-                    bind() {},
-                    inserted() {},
-                    update() {}
-                }
             }
         });
     </script>
