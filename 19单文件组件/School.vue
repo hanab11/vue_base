@@ -26,7 +26,7 @@ export default /*省略了Vue.extend()*/ {
 };
 </script>
     
-<style>
+<style scoped>
 /* 组件的样式——css（非单文件组件的弊病：样式不能跟着组件走） */
 .demo {
   background-color: orange;
