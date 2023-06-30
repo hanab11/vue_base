@@ -25,12 +25,12 @@ export default {
       //将输入的内容包装成一个todo对象，才能加入todos数组
       const todoObj = { id: nanoid(), name: this.value, done: false };
       //通知App组件，参数已经传好，可以去todos数组添加对象了
-      this.receiveObj(todoObj);
+      this.receiveTodo(todoObj);
       //清空输入
       this.value = "";
     },
   },
-  props: ["receiveObj"],
+  props: ["receiveTodo"],
 };
 </script>
 

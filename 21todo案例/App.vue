@@ -8,8 +8,12 @@
   <div id="root">
     <div class="todo-container">
       <div class="todo-wrap">
-        <MyHeader :receiveObj="receiveObj" />
-        <MyList :todos="todos" />
+        <MyHeader :receiveTodo="receiveTodo" />
+        <MyList
+          :todos="todos"
+          :checkTodo="checkTodo"
+          :deleteTodo="deleteTodo"
+        />
         <MyFooter />
       </div>
     </div>
@@ -38,8 +42,21 @@ export default {
     };
   },
   methods: {
-    receiveObj(obj) {
+    //接收一个todo
+    receiveTodo(obj) {
       this.todos.unshift(obj);
+    },
+    //勾选、取消勾选一个todo
+    checkTodo(id) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) todo.done = !todo.done;
+      });
+    },
+    //删除一个todo，一般删除有3种：popshift按顺序删、splice按下标删（配合indexOf查找再删除）、filter过滤器（过滤指定内容）
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => {
+        return todo.id !== id;
+      });
     },
   },
 };

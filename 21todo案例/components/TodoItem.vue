@@ -1,12 +1,19 @@
 <template>
   <li>
     <label>
-      <!-- 使用:checked动态地绑定√不√ -->
-      <input type="checkbox" :checked="todo.done" />
+      <!-- 如下代码也能实现，但是不推荐，因为违反会修改props，虽然props对象内部的数据vue并没有监控到 -->
+      <!-- <input type="checkbox" v-model="todo.done" /> -->
+
+      <!-- 使用:checked初始化并动态地绑定√不√ -->
+      <input
+        type="checkbox"
+        :checked="todo.done"
+        @change="handleCheck(todo.id)"
+      />
       <!-- 使用props接收到对象后，使用插值语法表达 -->
       <span>{{ todo.name }}</span>
     </label>
-    <button class="btn btn-danger" style="display: none">删除</button>
+    <button class="btn btn-danger" @click="handleDel(todo.id)">删除</button>
   </li>
 </template>
 
@@ -14,7 +21,18 @@
 export default {
   name: "TodoItem",
   //声明接收todo对象
-  props: ["todo"],
+  props: ["todo", "checkTodo", "deleteTodo"],
+  methods: {
+    //处理勾选检查、处理删除都是在操作App里的todos，需要app给函数
+    handleCheck(id) {
+      //通知App组件将done值取反
+      this.checkTodo(id);
+    },
+    handleDel(id) {
+      //通知App组件将对应todo对象删除
+      if (confirm("确定删除吗？")) this.deleteTodo(id);
+    },
+  },
 };
 </script>
 
@@ -42,7 +60,7 @@ li label li input {
 
 li button {
   float: right;
-  display: none;
+  display: none; /* 可以通过display控制显示与否 */
   margin-top: 3px;
 }
 
@@ -52,5 +70,13 @@ li:before {
 
 li:last-child {
   border-bottom: none;
+}
+
+li:hover {
+  background-color: #ddd;
+}
+
+li:hover button {
+  display: block;
 }
 </style>

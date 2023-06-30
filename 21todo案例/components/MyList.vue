@@ -2,7 +2,13 @@
   <ul class="todo-main">
     <!-- 可以直接在组件标签上做遍历 -->
     <!-- :todo是用组件标签向子组件传对象/表达式（不加:相当于字符串），需要子组件用props接收 -->
-    <TodoItem v-for="todoObj in todos" :key="todoObj.id" :todo="todoObj" />
+    <TodoItem
+      v-for="todoObj in todos"
+      :key="todoObj.id"
+      :todo="todoObj"
+      :checkTodo="checkTodo"
+      :deleteTodo="deleteTodo"
+    />
   </ul>
 </template>
 
@@ -11,7 +17,7 @@ import TodoItem from "./TodoItem.vue";
 export default {
   name: "MyList",
   components: { TodoItem },
-  props: ["todos"],
+  props: ["todos", "checkTodo", "deleteTodo"],
 };
 </script>
 
