@@ -14,7 +14,11 @@
           :checkTodo="checkTodo"
           :deleteTodo="deleteTodo"
         />
-        <MyFooter />
+        <MyFooter
+          :todos="todos"
+          :checkAllTodo="checkAllTodo"
+          :clearTodo="clearTodo"
+        />
       </div>
     </div>
   </div>
@@ -52,10 +56,22 @@ export default {
         if (todo.id === id) todo.done = !todo.done;
       });
     },
+    //勾选、取消勾选全部todo
+    checkAllTodo(done) {
+      this.todos.forEach((todo) => {
+        todo.done = done;
+      });
+    },
     //删除一个todo，一般删除有3种：popshift按顺序删、splice按下标删（配合indexOf查找再删除）、filter过滤器（过滤指定内容）
     deleteTodo(id) {
       this.todos = this.todos.filter((todo) => {
         return todo.id !== id;
+      });
+    },
+    //清除已完成todo（过滤指定内容）
+    clearTodo() {
+      this.todos = this.todos.filter((todo) => {
+        return !todo.done;
       });
     },
   },
