@@ -38,7 +38,8 @@ export default {
   },
   data() {
     return {
-      todos: [
+      //JSON的两个函数，stringify和parse可相互转换字符串和js对象，注意JSON.parse(NULL)结果是NULL
+      todos: JSON.parse(localStorage.getItem("todos")) || [
         { id: "001", name: "睡觉", done: false },
         { id: "002", name: "吃饭", done: true },
         { id: "003", name: "学习", done: true },
@@ -73,6 +74,16 @@ export default {
       this.todos = this.todos.filter((todo) => {
         return !todo.done;
       });
+    },
+  },
+  watch: {
+    todos: {
+      immediate: true, //初始化立刻执行一次
+      deep: true, //深度监视具体内容
+      handler(value) {
+        //监视并存储到本地，setItem传参是一个键值对
+        localStorage.setItem("todos", JSON.stringify(value));
+      },
     },
   },
 };
