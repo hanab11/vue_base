@@ -2,7 +2,7 @@
   <div class="todo-footer" v-if="total">
     <label>
       <!-- 如下代码也能实现，:checked只能解析表达式，可使用计算属性，使用函数时不生效 -->
-      <!-- <input type="checkbox" :checked="isAll" @change="handleSelectAll" /> -->
+      <!-- <input type="checkbox" :checked="isAll1" @change="handleSelectAll" /> -->
 
       <!-- 可交互数据，可以考虑使用v-model，isAll是一个计算属性而不是props接收的，所以这里推荐双向绑定 -->
       <input type="checkbox" v-model="isAll" />
@@ -17,7 +17,7 @@
 <script>
 export default {
   name: "MyFooter",
-  props: ["todos", "checkAllTodo", "clearTodo"],
+  props: ["todos" /* "checkAllTodo", "clearTodo" */],
   computed: {
     total() {
       return this.todos.length;
@@ -41,24 +41,25 @@ export default {
         return this.done === this.total && this.total > 0;
       },
       set(value) {
-        this.checkAllTodo(value);
+        this.$emit("checkAllTodo", value);
       },
     },
   },
   methods: {
     //不生效
     /* isAll1() {
-      return this.done === this.total;
+      return this.done === this.total && this.total > 0;
+    }, */
+    //处理全选
+    /* handleSelectAll(event) {
+      //通知App组件将done值设定
+      //this.checkAllTodo(event.target.checked);
+      this.$emit("checkAllTodo", event.target.checked);
     }, */
 
-    //处理全选
-    handleSelectAll(event) {
-      //通知App组件将done值设定
-      this.checkAllTodo(event.target.checked);
-    },
     handleClear() {
       //通知App组件将已完成todo从todos中剔除
-      if (confirm("确定清除已完成任务吗？")) this.clearTodo();
+      if (confirm("确定清除已完成任务吗？")) this.$emit("clearTodo");
     },
   },
 };

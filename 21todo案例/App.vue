@@ -1,14 +1,16 @@
 <!--
   父子组件相互传数据（需在子组件props声明接收）：
-    父传子，在父组件的子组件标签上传 数据；
-    子传父，在父组件的子组件标签上传 函数，函数的参数即是 子传给父的数据；
+    1）父传子，在父组件的子组件标签上传 数据；
+    2）子传父，在父组件的子组件标签上传 函数，函数的参数即是 子传给父的数据；
+    3）子传父，用组件的自定义事件（把:改成@），在子组件上用$emit触发事件；
+    4）A传C，使用全局事件总线
 -->
 
 <template>
   <div id="root">
     <div class="todo-container">
       <div class="todo-wrap">
-        <MyHeader :receiveTodo="receiveTodo" />
+        <MyHeader @receiveTodo="receiveTodo" />
         <MyList
           :todos="todos"
           :checkTodo="checkTodo"
@@ -16,8 +18,8 @@
         />
         <MyFooter
           :todos="todos"
-          :checkAllTodo="checkAllTodo"
-          :clearTodo="clearTodo"
+          @checkAllTodo="checkAllTodo"
+          @clearTodo="clearTodo"
         />
       </div>
     </div>
