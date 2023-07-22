@@ -2,8 +2,9 @@
   父子组件相互传数据（需在子组件props声明接收）：
     1）父传子，在父组件的子组件标签上传 数据；
     2）子传父，在父组件的子组件标签上传 函数，函数的参数即是 子传给父的数据；
-    3）子传父，用组件的自定义事件（把:改成@），在子组件上用$emit触发事件；
-    4）A传C，使用全局事件总线
+    3）子传父，用组件的自定义事件（把:改成@ 或 $on绑定），在子组件上用$emit触发事件；
+    
+    4）任意传任意，使用全局事件总线（用$on绑定），在子组件上用$emit触发事件；
 -->
 
 <template>
@@ -11,11 +12,7 @@
     <div class="todo-container">
       <div class="todo-wrap">
         <MyHeader @receiveTodo="receiveTodo" />
-        <MyList
-          :todos="todos"
-          :checkTodo="checkTodo"
-          :deleteTodo="deleteTodo"
-        />
+        <MyList :todos="todos" />
         <MyFooter
           :todos="todos"
           @checkAllTodo="checkAllTodo"
@@ -87,6 +84,15 @@ export default {
         localStorage.setItem("todos", JSON.stringify(value));
       },
     },
+  },
+  //在事件总线上绑定和销毁（时机是挂载、销毁之前）
+  mounted() {
+    this.$bus.$on("checkTodo", this.checkTodo);
+    this.$bus.$on("deleteTodo", this.deleteTodo);
+  },
+  beforeDestroy() {
+    this.$bus.$off("checkTodo");
+    this.$bus.$off("deleteTodo");
   },
 };
 </script>

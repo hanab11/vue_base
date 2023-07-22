@@ -8,5 +8,8 @@ Vue.config.productionTip = false
 
 //创建Vue实例对象vm
 new Vue({
-  render: f => f(App), //将App组件放入容器 
+  render: f => f(App), //将App组件放入容器
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  }
 }).$mount('#root') //vm.$mount函数式指定容器 = el
