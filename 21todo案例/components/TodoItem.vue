@@ -1,5 +1,6 @@
 <template>
   <li>
+    <!-- label：点击其中一个文本标签选中选项 -->
     <label>
       <!-- 如下代码也能实现，但是不推荐，因为违反会修改props，虽然props对象内部的数据vue并没有监控到 -->
       <!-- <input type="checkbox" v-model="todo.done" /> -->
