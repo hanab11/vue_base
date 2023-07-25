@@ -4,7 +4,7 @@
   2.应用在html标签上获取真实DOM元素，应用在组件标签上获取组件实例对象（vc）
   3.使用方式：
     打标识：<h1 ref="xxx"></h1> 或 <App ref="xxx"/>
-    获取：this.$refs.xxx
+    获取数据：this.$refs.xxx
 -->
 
 
@@ -37,7 +37,7 @@ export default {
 
       //但是组件标签上的ref和id有明显区别
       console.log(
-        "通过ref访问组件标签",
+        "通过$refs访问组件标签并且获取数据",
         this.$refs.sch,
         this.$refs.sch.address
       ); //获取School组件实例对象（vc）
