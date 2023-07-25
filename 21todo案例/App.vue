@@ -4,7 +4,8 @@
     2）子传父，在父组件的子组件标签上传 函数，函数的参数即是 子传给父的数据；
     3）子传父，用组件的自定义事件（把:改成@ 或 $on绑定），在子组件上用$emit触发事件；
     
-    4）任意传任意，使用全局事件总线（用$on绑定），在子组件上用$emit触发事件；
+    4）任意通信，使用全局事件总线（用$on绑定），在需要传参的组件上用$emit触发事件；
+    5）任意通信，使用消息订阅与发布（scribe订阅），在需要传参的组件上发布消息。
 -->
 
 <template>
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+import pubsub from "pubsub-js";
 import MyHeader from "./components/MyHeader.vue";
 import MyList from "./components/MyList.vue";
 import MyFooter from "./components/MyFooter.vue";
@@ -63,7 +65,8 @@ export default {
       });
     },
     //删除一个todo，一般删除有3种：popshift按顺序删、splice按下标删（配合indexOf查找再删除）、filter过滤器（过滤指定内容）
-    deleteTodo(id) {
+    //如果作为消息的回调函数，第一个参数默认为消息名msgName（不需要的话得用_占位），后面的参数才是数据data
+    deleteTodo(_, id) {
       this.todos = this.todos.filter((todo) => {
         return todo.id !== id;
       });
@@ -88,11 +91,15 @@ export default {
   //在事件总线上绑定和销毁（时机是挂载、销毁之前）
   mounted() {
     this.$bus.$on("checkTodo", this.checkTodo);
-    this.$bus.$on("deleteTodo", this.deleteTodo);
+    this.msgId = pubsub.subscribe("deleteTodo", this.deleteTodo); //订阅消息并生成消息id
+
+    /* this.$bus.$on("deleteTodo", this.deleteTodo); */
   },
   beforeDestroy() {
     this.$bus.$off("checkTodo");
-    this.$bus.$off("deleteTodo");
+    pubsub.unsubscribe(this.msgId); //取消订阅消息id
+
+    /* this.$bus.$off("deleteTodo"); */
   },
 };
 </script>
