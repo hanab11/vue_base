@@ -11,9 +11,23 @@
         @change="handleCheck(todo.id)"
       />
       <!-- 使用props接收到对象后，使用插值语法表达 -->
-      <span>{{ todo.name }}</span>
+      <span v-show="!todo.isEdit">{{ todo.name }}</span>
+      <input
+        type="text"
+        v-show="todo.isEdit"
+        :value="todo.name"
+        @blur="handleBlur(todo, $event)"
+        ref="input"
+      />
     </label>
     <button class="btn btn-danger" @click="handleDel(todo.id)">删除</button>
+    <button
+      v-show="!todo.isEdit"
+      class="btn btn-danger"
+      @click="handleEdit(todo)"
+    >
+      编辑
+    </button>
   </li>
 </template>
 
@@ -34,6 +48,27 @@ export default {
       if (confirm("确定删除吗？")) pubsub.publish("deleteTodo", id);
 
       /* this.$bus.$emit("deleteTodo", id); */
+    },
+    handleEdit(todo) {
+      //要给todo添加属性，必须是响应式的，否则是写死的
+      if (todo.isEdit != undefined) {
+        todo.isEdit = true;
+        /* console.log("赋值"); */
+      } else {
+        this.$set(todo, "isEdit", true);
+        /* console.log("添加"); */
+      }
+      //用ref拿到输入框，自动获取焦点，否则不能顺利失焦
+      //想对基于本次更新后的新DOM操作时，可以用$nextTick(回调)
+      this.$nextTick(() => {
+        this.$refs.input.focus();
+      });
+    },
+    handleBlur(todo, e) {
+      todo.isEdit = false;
+      //失去焦点回调，通知App组件将todo.name修改
+      if (!e.target.value.trim()) return alert("输入不能为NULL");
+      this.$bus.$emit("updateTodo", todo.id, e.target.value); //使用$event，参数写成e，不能和evnet重名
     },
   },
 };

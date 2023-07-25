@@ -77,6 +77,11 @@ export default {
         return !todo.done;
       });
     },
+    updateTodo(id, name) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) todo.name = name;
+      });
+    },
   },
   watch: {
     todos: {
@@ -88,16 +93,18 @@ export default {
       },
     },
   },
-  //在事件总线上绑定和销毁（时机是挂载、销毁之前）
+  //在事件总线上绑定和解绑（时机是挂载、销毁之前）
   mounted() {
     this.$bus.$on("checkTodo", this.checkTodo);
     this.msgId = pubsub.subscribe("deleteTodo", this.deleteTodo); //订阅消息并生成消息id
+    this.$bus.$on("updateTodo", this.updateTodo);
 
     /* this.$bus.$on("deleteTodo", this.deleteTodo); */
   },
   beforeDestroy() {
     this.$bus.$off("checkTodo");
     pubsub.unsubscribe(this.msgId); //取消订阅消息id
+    this.$bus.$off("updateTodo");
 
     /* this.$bus.$off("deleteTodo"); */
   },
