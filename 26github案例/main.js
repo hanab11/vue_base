@@ -2,9 +2,14 @@
 import Vue from 'vue'
 //引入App组件，它管理所有单组件，是他们的父组件
 import App from './App.vue'
+//引入vue-resource（插件库，发ajax请求）
+import vueResource from 'vue-resource'
 
 //去除vue生产提示
 Vue.config.productionTip = false
+
+//使用插件
+Vue.use(vueResource)
 
 //创建Vue实例对象vm
 new Vue({

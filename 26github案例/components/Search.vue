@@ -32,25 +32,28 @@ export default {
         users: [],
       })
       //使用模板字符串和${}带表达式带数据，免费的API在后端就已经解决掉跨域
-      axios.get(`https://api.github.com/search/users?q=${this.keyWord}`).then(
-        (response) => {
-          console.log('请求成功了', response.data)
-          //请求响应成功后，更新List数据，谁传数据谁触发
-          this.$bus.$emit('updateListData', {
-            isLoading: false,
-            errMsg: '',
-            users: response.data.items,
-          })
-        },
-        (error) => {
-          //请求响应失败后
-          this.$bus.$emit('updateListData', {
-            isLoading: false,
-            errMsg: error.message,
-            users: [],
-          })
-        }
-      )
+      //vueResource的$http和axios用法上完全一样
+      this.$http
+        .get(`https://api.github.com/search/users?q=${this.keyWord}`)
+        .then(
+          (response) => {
+            console.log('请求成功了', response.data)
+            //请求响应成功后，更新List数据，谁传数据谁触发
+            this.$bus.$emit('updateListData', {
+              isLoading: false,
+              errMsg: '',
+              users: response.data.items,
+            })
+          },
+          (error) => {
+            //请求响应失败后
+            this.$bus.$emit('updateListData', {
+              isLoading: false,
+              errMsg: error.message,
+              users: [],
+            })
+          }
+        )
     },
   },
 }
