@@ -1,4 +1,7 @@
 <!--
+  axios发送网络请求，到API接口（表现为资源地址），
+  由接口服务器响应回传资源，响应对象一种是正常响应response一种是错误响应error
+
   A发送ajax请求（前端浏览器网络技术）
     1.xhr：原生使用麻烦，new XMLHttpRequest()
     2.jQuery：核心对DOM操作，和vue等框架理念不同，$get $post
