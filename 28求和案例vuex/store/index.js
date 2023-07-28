@@ -6,13 +6,13 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 /*
-	vuex集中式状态管理，集中在store仓库，管理数据或状态，
-	还可以把公共的业务逻辑存放在actions里
+	vuex集中式状态管理，集中在store仓库，管理state状态或数据，
+	还可以把公共的业务逻辑存放在actions里，把基础操作存放在mutations里（提供了 操作状态 的方法）
 */
 
-//准备actions——用于 响应 组件中的动作 
-//context上下文对象里面有commit提交、dispatch派遣、state状态
-//传参用上下文是为了防止业务逻辑太复杂
+//准备actions——用于 响应 组件中的动作
+// context上下文对象里面有commit提交、dispatch派遣、state状态
+// 传参用上下文是为了防止业务逻辑太复杂
 const actions = {
 	//没有业务逻辑的操作，直接使用commit的JIA、JIAN
 	/* jia(context, value) {
@@ -36,7 +36,7 @@ const actions = {
 		}, 1000)
 	}
 }
-//准备mutations——用于操作数据（state）
+//准备mutations——用于操作数据
 const mutations = {
 	JIA(state, value) {
 		console.log('mutations中的JIA被调用了', state, value)
