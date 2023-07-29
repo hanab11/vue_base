@@ -26,7 +26,11 @@
           </router-link>
         </li>
       </ul>
-      <router-view></router-view>
+      <!-- 路由组件view展示在哪，数据就放在哪，
+            使用keep-alive缓存（不展示的）路由组件，延长生命周期 -->
+      <keep-alive include="News">
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
