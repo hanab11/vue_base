@@ -14,7 +14,7 @@
         <!-- 路由跳转时携带query参数（在对象用键值对形式），to的对象写法 -->
         <router-link
           :to="{
-            path: '/home/message/detail',
+            name: 'detail',
             query: {
               id: m.id,
               title: m.title,

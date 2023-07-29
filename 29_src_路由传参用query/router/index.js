@@ -19,6 +19,7 @@ export default new VueRouter({
 			component: Home,
 			children: [ //写了children配置项，二级路由的path不需要加/了
 				{
+					name: 'news',
 					path: 'news',
 					component: News,
 				},
@@ -27,6 +28,7 @@ export default new VueRouter({
 					component: Message,
 					children: [
 						{
+							name: 'detail', //使用to的对象写法可只填name不填path
 							path: 'detail',
 							component: Detail
 						}

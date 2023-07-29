@@ -7,7 +7,9 @@
           <router-link
             class="list-group-item"
             active-class="active"
-            to="/home/news"
+            :to="{
+              name: 'news',
+            }"
           >
             News
           </router-link>
