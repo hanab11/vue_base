@@ -14,7 +14,7 @@ const router = new VueRouter({
 			name: 'about',
 			path: '/about',
 			component: About,
-			meta: { isAuth: false },
+			meta: { isAuth: true },
 		},
 		{
 			name: 'home',
@@ -28,7 +28,7 @@ const router = new VueRouter({
 					component: News,
 					meta: { isAuth: true },
 					//独享的路由守卫（可以后全局后置路由搭配使用）
-					beforeEnter: (to, from, next) => {
+					/* beforeEnter: (to, from, next) => {
 						console.log('独享路由守卫', 'to', to, 'from', from)
 						if (localStorage.getItem('school') === 'guigu') {
 							console.log('鉴权成功');
@@ -37,7 +37,7 @@ const router = new VueRouter({
 							console.log('鉴权失败');
 							alert('学校名不对，无权限查看！')
 						}
-					}
+					} */
 				},
 				{
 					name: 'message',
