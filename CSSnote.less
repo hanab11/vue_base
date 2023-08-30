@@ -1,0 +1,152 @@
+/*
+// 用经典的样式、布局、效果，熟悉CSS属性
+样式/布局/效果相关，readme
+
+使用 less 编写模块化的 CSS✔
+使用 vue 的过渡编写交互动画（去shop.vue、shopgoods、shopheader等找）
+制作并使用字体图标iconfont✔（可调整，放大不模糊）
+解决移动端 1px 边框问题✔
+移动端 css sticky footer 固定底部布局（去footer.vue找）
+使用 flex 弹性布局✔
+ */
+
+// 属性:值（注释里属性默认不写，简写属性只记录简写）
+* {
+  // 取消浏览器默认手势行为，让程序员自定义滚动和手势行为
+  touch-action: manipulation; // （manipulation表示只允许滚动和持续缩放，双击缩放不触发，可解决移动端点击响应延时）
+}
+
+.reset {
+  margin: 0; // 简写，设置元素所有外边距的宽度，或者设置各边上外边距的宽度，可以有1到4个值
+  padding: 0; // 简写，设置元素所有内边距的宽度，或者设置各边上内边距的宽度，可以有1到4个值
+  border: 0; // 简写，设置元素所有的边框属性，可按顺序设置属性-width、-style（必须）、-color
+  font-size: 100%; // 设置元素的字体大小（实际上它设置的是字体中字符框的高度，字符可能比框高、矮）
+  font-weight: normal; // 设置文本中字体粗细（normal等于400，bold等于700）
+  vertical-align: baseline; // 设置元素的垂直对齐方式（baseline默认，元素放在父元素的基线上，即英文字母下边沿）
+}
+
+.reset-header,
+.reset-footer {
+  display: block; // 规定元素应该生成的框的类型（block块级元素，元素前后会自带换行符）
+}
+
+// custom
+a {
+  color: #7e8c8d; // 设置元素文本的颜色
+  text-decoration: none; // 规定添加到文本的修饰，划线样式等
+  -webkit-backface-visibility: hidden; // 定义当元素不面向屏幕时是否可见，-webkit兼容Chrome、Safari（hidden隐藏）
+}
+
+// 显示省略号
+.ellipsis {
+  overflow: hidden; // 定义当内容溢出元素框时如何处理，分有、无滑动条两种（hidden溢出内容隐藏）
+  text-overflow: ellipsis; // 定义当文本溢出元素框时如何处理（ellipsis显示省略号）
+  white-space: nowrap; // 设置如何处理元素内的空白符，换行也是一种空白符（nowrap不换行）
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+// 一像素下边框
+.bottom-border-1px(@color) {
+  position: relative; // 规定元素的定位类型（relative相对定位）
+  border: none;
+
+  &:after {
+    content: ''; // 定义在元素之前或之后放置的生成内容，配合:before、:after使用
+    position: absolute; // 规定元素的定位类型（absolute绝对定位）
+    left: 0; // 规定元素的左边缘
+    bottom: 0; // 规定元素的底部边缘
+    width: 100%; // 设置元素的宽度
+    height: 1px; // 设置元素的高度
+    background-color: @color; // 设置元素的背景颜色
+    transform: scaleY(0.5); // 允许对元素进行旋转、缩放、移动或倾斜（scaleY缩放Y轴）
+  }
+}
+
+// 一像素上边框
+.top-border-1px(@color) {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 200; // 设置元素的堆叠顺序，可为负值
+    left: 0;
+    top: 0; // 规定元素的顶部边缘
+    width: 100%;
+    height: 1px;
+    background-color: @color;
+  }
+}
+
+// 根据像素比缩放1px像素边框
+// 媒体查询语法，用于根据不同的屏幕大小和设备类型来应用不同的样式，device-pixel-ratio设备像素比
+@media only screen and (-webkit-device-pixel-ratio: 2) {
+  .border-1px {
+
+    // 双冒号(::)用于CSS3伪元素，单冒号(:)用于CSS3伪类
+    &::before {
+      transform: scaleY(0.5);
+    }
+  }
+}
+
+@media only screen and (-webkit-device-pixel-ratio: 3) {
+  .border-1px {
+    &::before {
+      transform: scaleY(0.333333);
+    }
+  }
+}
+
+// 根据像素比，使用2x图、3x图
+.bg-image(@url) {
+  // 注意：less中的+，一般是用于颜色和数字变量的计算，而不是字符串的相加，这里应该是按字符串插值的方法写
+  background-image:~"url(@{url}@2x.png)"; // 设置背景图像
+
+  // min-device-pixel-ratio设备像素比
+  @media (-webkit-min-device-pixel-ratio: 3),
+  (min-device-pixel-ratio: 3) {
+    background-image:~"url(@{url}@3x.png)"; // 写成(@url + "@3x.png")报错，无法解析 +
+  }
+}
+
+// 清除浮动
+.clearFix() {
+  *zoom: 1; // 控制元素的缩放比例，zoom属性是IE浏览器的专有属性
+
+  &::after {
+    content: ''; // 也能配合::after、::before使用
+    display: block;
+    clear: both; // 规定元素的哪一侧不允许其他浮动元素
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+// 请求数据type，动态绑定样式
+.activity-item {
+  margin-bottom: 12px; // 设置元素的下外边距
+  display: flex; // 弹性布局要求父元素的display属性设置为flex（弹性框布局模块，可更轻松地设计响应式布局结构，而无需使用浮动或定位）
+  font-size: 13px;
+  align-items: center; // 给弹性容器内的项目，指定默认对齐方式
+
+  // &同级样式，多选一效果
+  &.activity-green {
+    .content-tag {
+      background-color: rgb(112, 188, 70);
+    }
+  }
+
+  &.activity-red {
+    .content-tag {
+      background-color: rgb(240, 115, 115);
+    }
+  }
+
+  &.activity-orange {
+    .content-tag {
+      background-color: rgb(241, 136, 79);
+    }
+  }
+}
