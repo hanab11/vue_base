@@ -31,6 +31,15 @@ export default {
 			}
 		})
 
+		/**
+		 * 总结：了解监视reactive：对象、最外层对象、对象里某个属性，会发生什么
+		 * =>
+		 * 监视对象：oldvalue失效，
+		 * 监视最外层对象：默认启动deep深度监视，
+		 * 监视对象里某个属性：需要用函数括起来，
+		 * 某些属性 就用数组括起多个函数，接着如果属性还是对象，还需要加deep深度监视
+		 */
+
 		//情况一：监视ref所定义的一个响应式数据，immediate配置写在回调之后
 		/* watch(sum, (newValue, oldValue) => {
 			console.log('sum变了', newValue, oldValue)
@@ -44,9 +53,9 @@ export default {
 
 		/* 
 			情况三：监视reactive所定义的响应式数据的全部属性
-					1.注意：此处无法正确的获取oldValue（只要是对象就出bug）
-					2.注意：监视reactive定义对象（最外层对象），默认强制开启深度监视（deep）
-		*/
+				1.注意：此处无法正确的获取oldValue（只要是对象就出bug）
+				2.注意：监视reactive定义对象（最外层对象），默认强制开启深度监视（deep）
+		 */
 		/* watch(person, (newValue, oldValue) => {
 			console.log('person变化了', newValue, oldValue)
 		}, { deep: false }) //此处的deep配置无效 */
