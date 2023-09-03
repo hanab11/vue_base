@@ -56,7 +56,7 @@ export default {
 			console.log('person的name变化了', newValue, oldValue)
 		}) */
 
-		//情况五：监视reactive所定义的响应式数据中的某些属性，即便监视数组，里面也得是函数、ref、reactive数据
+		//情况五：监视reactive所定义的响应式数据中的某些属性，即便监视数组，里面也得是函数、ref、reactive数据、数组
 		watch([() => person.name, () => person.age], (newValue, oldValue) => {
 			console.log('person的name或age变化了', newValue, oldValue)
 		}) // 变相解决情况三
@@ -64,7 +64,7 @@ export default {
 		//特殊情况，监视reactive所定义的响应式数据中的某个属性job，job是对象，所以deep配置有效
 		watch(() => person.job, (newValue, oldValue) => {
 			console.log('person的job变化了', newValue, oldValue) // 只要是对象，oldValue就无法正确获取
-		}, { deep: false }) 
+		}, { deep: false })
 
 
 		//返回一个对象（常用）
